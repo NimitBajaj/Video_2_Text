@@ -5,16 +5,34 @@ import os
 import assemblyai as aai
 from credentials import secret_api_key
 
+aai.settings.api_key = secret_api_key
 
 def convert_to_text():
     video_path=entry.get()
     try:
         video = mp.VideoFileClip(video_path)
         audio = video.audio
+        audio_file = video_path.rsplit('.', 1)[0] + ".mp3"
+        audio.write_audiofile(audio_file)
+        transcriber = aai.Transcriber()
+        transcript = transcriber.transcribe(audio_file)
+        
+
+        if transcript.status == aai.TranscriptStatus.error:
+            print(f"Error: {transcript.error}")
+        else:
+    
+            transcription_text = transcript.text
+            print(f"Transcription: {transcription_text}")
+
+            transcription_file_path = os.path.join(os.getcwd(), "transcription.txt")
+            with open("transcription.txt", "w") as text_file:
+               text_file.write(transcription_text)
+               messagebox.showinfo("Success", f"Transcription saved as {transcription_file_path}")
 
     except Exception as e:
-         messagebox.showerror("Error", f"An error occurred: {e}")
-
+        messagebox.showerror("Error", f"An error occurred: {e}")
+  
     
 
 
