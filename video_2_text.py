@@ -14,6 +14,7 @@ def convert_to_text():
         audio = video.audio
         audio_file = video_path.rsplit('.', 1)[0] + ".mp3"
         audio.write_audiofile(audio_file)
+        messagebox.showinfo("Success", f"Audio file saved as {audio_file}")
         transcriber = aai.Transcriber()
         transcript = transcriber.transcribe(audio_file)
         
@@ -59,7 +60,7 @@ entry.grid(row=0, column=1, pady=5)
 browse_button = Button(frame, text="Browse", command=browse_file)
 browse_button.grid(row=0, column=2, padx=5)
 
-convert_button = Button(frame, text="Convert to Text", command=convert_to_text)
+convert_button = Button(frame, text="Convert to Audio and Transcribe ", command=convert_to_text)
 convert_button.grid(row=1, columnspan=3, pady=10)
 
 
